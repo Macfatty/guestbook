@@ -1,5 +1,5 @@
-# Build stage - använder Red Hat UBI med Go toolset
-FROM registry.access.redhat.com/ubi10/go-toolset:1.22 AS builder
+# Build stage - officiell Go image
+FROM golang:1.22-alpine AS builder
 
 WORKDIR /workspace
 
@@ -9,21 +9,24 @@ COPY go.mod go.sum ./
 # Ladda ner dependencies
 RUN go mod download
 
-# Kopiera all källkod
-COPY . .
+# Kopiera källkod
+COPY main.go ./
 
 # Bygg applikationen
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o guestbook-api .
 
-# Runtime stage - minimal UBI image
-FROM registry.access.redhat.com/ubi10-minimal:10.0
+# Runtime stage - Alpine minimal
+FROM alpine:latest
 
 WORKDIR /app
+
+# Installera ca-certificates
+RUN apk --no-cache add ca-certificates
 
 # Kopiera den kompilerade binären från builder
 COPY --from=builder /workspace/guestbook-api /app/guestbook-api
 
-# Exponera port (informativt)
+# Exponera port
 EXPOSE 8080
 
 # Kör applikationen
