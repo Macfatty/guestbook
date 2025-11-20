@@ -20,9 +20,6 @@ FROM alpine:latest
 
 WORKDIR /app
 
-# Installera ca-certificates
-RUN apk --no-cache add ca-certificates
-
 # Kopiera den kompilerade binären från builder
 COPY --from=builder /workspace/guestbook-api /app/guestbook-api
 
