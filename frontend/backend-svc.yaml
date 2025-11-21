@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: "2025-11-19T10:29:11Z"
+  labels:
+    app: guestbook-backend
+    app.kubernetes.io/component: guestbook-backend
+    app.kubernetes.io/instance: guestbook-backend
+  name: backend
+  namespace: grupp5-test
+  resourceVersion: "4205611"
+  uid: 66eaf3ab-b25d-47db-9a83-89360a611af8
+spec:
+  clusterIP: 172.30.208.133
+  clusterIPs:
+  - 172.30.208.133
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: 8080-tcp
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    deployment: guestbook-backend
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
